@@ -2,7 +2,7 @@ from http import URL
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import uuid
-from games import new_id
+from game import new_id
 
 from pydantic import BaseModel, Field
 
