@@ -54,4 +54,5 @@ while running:
     # flip() the display to put your work on screen
     pygame.display.flip()
 
+# when 'running' bool is false we quit (close the window, end process etc. i guess)
 pygame.quit()
