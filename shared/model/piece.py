@@ -9,9 +9,11 @@ class PieceType(Enum):
     KING = auto()
     QUEEN = auto()
 
+class Color(Enum):
+    WHITE = auto()
+    BLACK = auto()
 
-@dataclass
-class Piece(frozen = True):
-    type : PieceType
-     
-
+@dataclass(frozen=True)
+class Piece:
+    type: PieceType
+    color: Color

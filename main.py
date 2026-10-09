@@ -3,6 +3,8 @@ import pygame
 import pygame_gui
 from client.constants import *
 from client.view.menu_screen import MainMenu
+from client.view.host_screen import HostScreen
+from client.view.game_screen import GameScreen
 
 # pygame setup
 pygame.init()
@@ -13,7 +15,8 @@ pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags=pygame.RESIZABLE | pygame.SCALED)
 
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-menu = MainMenu(manager)
+current_screen = MainMenu(manager)
+
 
 clock = pygame.time.Clock()
 running = True
@@ -28,20 +31,26 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        menuAction = menu.handle_event(event)
+        manager.process_events(event)
+
+        menuAction = current_screen.handle_event(event)
         
         match menuAction:
+            case "test":
+                current_screen.kill()
+                current_screen = GameScreen(manager)
             case "host":
-                menu.kill() #methinks we kill it then initialize the host screen which we dont have and all that other stuff for join and settings
+                current_screen.kill()
+                current_screen = HostScreen(manager)
             case "join":
-                menu.kill()
+                pass
             case "quit":
                 running = False
             case "settings":
-                menu.kill()
-        
-
-        manager.process_events(event)
+                pass
+            case "back":
+                current_screen.kill()
+                current_screen = MainMenu(manager)
 
     manager.update(time_delta)
 
@@ -49,6 +58,7 @@ while running:
     screen.fill("gray")
 
     # RENDER YOUR GAME HERE
+    current_screen.draw(screen)
     manager.draw_ui(screen)
 
     # flip() the display to put your work on screen
